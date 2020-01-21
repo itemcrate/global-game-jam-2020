@@ -24,6 +24,7 @@ config/icon="res://Resources/Sprites/icon.png"
 [autoload]
 
 WorldState="*res://State/WorldState.gd"
+Transition="*res://UI/Transition/Transition.tscn"
 
 [display]
 
