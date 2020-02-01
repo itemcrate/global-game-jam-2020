@@ -43,7 +43,13 @@ func _physics_process(delta):
 	ai_move_toward(target, delta)
 
 func on_hit_vehicle():
-	print("Enemy: hit vehicle")
+	if !hasPart:
+		hasPart = true
+		partType = randi()%4+1 # int from 1 to 3
+		print("Enemy: hit vehicle")
+		print(partType)
+		# TODO: collect part from vehicle
 
 func on_hit_player():
+	# TODO: drop part (bool flag change)
 	pass
