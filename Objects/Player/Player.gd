@@ -37,6 +37,8 @@ func get_input():
 		if collider.is_in_group("Obstructions"):
 			collider.damage()
 		# When colliding with the vehicle, the action is to deposit your collectibles into it
+		elif ray.get_collider().is_in_group("Enemy"):
+			ray.get_collider().on_hit_by_player()
 		elif ray.get_collider().is_in_group("Vehicle"):
 			if self.heldCollectible:
 				self.heldCollectible.deposit()

@@ -6,7 +6,9 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.0
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D" groups=[
+"Enemy",
+]]
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
