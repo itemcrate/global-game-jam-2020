@@ -25,6 +25,7 @@ config/icon="res://Resources/Sprites/icon.png"
 
 WorldState="*res://State/WorldState.gd"
 Transition="*res://UI/Transition/Transition.tscn"
+InfoBox="*res://UI/InfoBox/InfoBox.tscn"
 
 [display]
 
