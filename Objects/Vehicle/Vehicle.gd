@@ -48,9 +48,7 @@ func _physics_process(_delta):
 			self._set_animation()
 		
 		self.motion = move_and_slide(self.motion.rotated(self.get_rotation()))
-
 		
-
 func _set_animation(new_animation = ""):
 	if (self.current_animation == new_animation):
 		return
@@ -61,10 +59,21 @@ func _set_animation(new_animation = ""):
 		self.current_animation = ""
 		return
 	
+	# Update Current Animation
 	self.current_animation = new_animation
+	
+	# Set Animations
 	LeftTreadAnimationPlayer.play(self.current_animation)
 	RightTreadAnimationPlayer.play(self.current_animation)
-
+	
+	# Set Animation Speed Scale
+	if (self.current_animation == "Reverse"):
+		LeftTreadAnimationPlayer.set_speed_scale(0.75)
+		RightTreadAnimationPlayer.set_speed_scale(0.75)
+	else:
+		LeftTreadAnimationPlayer.set_speed_scale(1.5)
+		RightTreadAnimationPlayer.set_speed_scale(1.5)
+		
 func enter():
 	# Enable Vehicle
 	self.is_active = true
