@@ -56,7 +56,7 @@ func ai_move_toward(_target, delta):
 		if ray.get_collider().is_in_group("Vehicle"):
 			on_hit_vehicle()
 		if ray.get_collider().is_in_group("Player"):
-			on_hit_player()
+			on_attack_player()
 
 func _physics_process(delta):
 	ai_sense_env()
@@ -75,8 +75,10 @@ func on_hit_vehicle():
 		target = target.normalized() * 2000
 		# TODO: collect part from vehicle
 
-func on_hit_player():
+func on_hit_by_player():
 	if hasPart:
 		hasPart = false
 		# TODO: die & drop part
-	pass
+
+func on_attack_player():
+	pass # TODO: stun player
