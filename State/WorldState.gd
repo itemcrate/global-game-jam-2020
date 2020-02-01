@@ -38,5 +38,6 @@ func increment_vehicle_health(amount):
 func decrement_vehicle_health(amount):
 	if ((self.vehicle_health - amount) < 0):
 		self.vehicle_health = 0
+		Transition.fade_to("res://Screens/GameOver/GameOver.tscn")
 	else:
 		self.vehicle_health -= amount
