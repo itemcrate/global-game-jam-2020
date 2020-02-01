@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Resources/Sprites/vehicle_base.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Resources/Audio/sound_engine_start.wav" type="AudioStream" id=7]
 [ext_resource path="res://Resources/Audio/ambience_engine_idle.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Resources/Audio/sound_engine_stop.wav" type="AudioStream" id=9]
+[ext_resource path="res://Resources/Audio/music_battle.ogg" type="AudioStream" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22, 22 )
@@ -16,13 +17,13 @@ extents = Vector2( 22, 22 )
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 0.12549, 0.223529, 0.309804, 1, 0.12549, 0.223529, 0.309804, 0 )
 
-[sub_resource type="GradientTexture" id=6]
-gradient = SubResource( 5 )
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 1
 emission_sphere_radius = 2.0
 flag_disable_z = true
@@ -33,10 +34,9 @@ gravity = Vector3( 0, 0, 0 )
 initial_velocity = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 4 )
 
-[sub_resource type="Animation" id=3]
-resource_name = "Default"
+[sub_resource type="Animation" id=6]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -51,6 +51,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 1, 0 ), Vector2( -1, 0 ) ]
 }
+
+[sub_resource type="CircleShape2D" id=7]
+radius = 112.0
 
 [node name="Vehicle" type="KinematicBody2D" groups=[
 "Vehicle",
@@ -80,7 +83,7 @@ position = Vector2( 0, 20 )
 z_index = -1
 amount = 32
 local_coords = false
-process_material = SubResource( 4 )
+process_material = SubResource( 5 )
 
 [node name="RightTread" type="Sprite" parent="."]
 position = Vector2( 19, 2 )
@@ -96,7 +99,7 @@ position = Vector2( 0, 20 )
 z_index = -1
 amount = 32
 local_coords = false
-process_material = SubResource( 4 )
+process_material = SubResource( 5 )
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -104,7 +107,7 @@ offset = Vector2( -0.779733, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Body"]
 playback_speed = 2.0
-anims/Default = SubResource( 3 )
+anims/Default = SubResource( 6 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -127,3 +130,12 @@ bus = "SFX"
 stream = ExtResource( 9 )
 volume_db = 6.0
 bus = "SFX"
+
+[node name="BattleMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+bus = "Music"
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+shape = SubResource( 7 )
