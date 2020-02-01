@@ -11,8 +11,8 @@ func _ready():
 	TransitionTimer.connect("timeout", self, "_on_transition_timer_timeout")
 	
 func _input(event):
-	if (event.is_action_pressed("debug")):
-		AnimationPlayer.play("Default")
+	if (event.is_action_pressed("ui_accept")):
+		Transition.fade_to("res://Screens/Main/Main.tscn")
 
 func _on_transition_timer_timeout():
 	Transition.fade_to("res://Screens/Main/Main.tscn")
