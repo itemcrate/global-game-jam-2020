@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Screens/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Goal/Goal.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/Obstruction/Barricade.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/Audio/ambience_wind.ogg" type="AudioStream" id=6]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -20,3 +21,8 @@ position = Vector2( 0, 144 )
 
 [node name="Barricade" parent="." instance=ExtResource( 5 )]
 position = Vector2( 76.5636, 89.5957 )
+
+[node name="AmbienceAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 12.0
+autoplay = true
