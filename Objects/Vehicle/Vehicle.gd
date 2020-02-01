@@ -4,11 +4,14 @@ var Player = preload("res://Objects/Player/Player.tscn")
 
 onready var PlayerExitPosition = get_node("PlayerExitPosition")
 onready var PlayerDetector = get_node("PlayerDetector")
+onready var LeftTreadAnimationPlayer = get_node("LeftTread/AnimationPlayer")
+onready var RightTreadAnimationPlayer = get_node("RightTread/AnimationPlayer")
 
 var motion: Vector2 = Vector2()
 var speed = 20
 var is_active = false
 var nearby_passenger = null
+var current_animation = null
 
 func _ready():
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
@@ -27,8 +30,7 @@ func _physics_process(_delta):
 		
 		if (Input.is_action_pressed("vehicle_forward")):
 			self.motion.y = -1 * self.speed
-		
-		if (Input.is_action_pressed("vehicle_reverse")):
+		elif (Input.is_action_pressed("vehicle_reverse")):
 			self.motion.y = 1 * (self.speed / 2)
 			
 		if (Input.is_action_pressed("vehicle_left")):
@@ -37,7 +39,31 @@ func _physics_process(_delta):
 		if (Input.is_action_pressed("vehicle_right")):
 			self.set_rotation_degrees(self.get_rotation_degrees() + 1)
 		
+		# Set Animation
+		if (self.motion.y >= 1):
+			self._set_animation("Reverse")
+		elif (self.motion.y <= -1):
+			self._set_animation("Forward")
+		else:
+			self._set_animation()
+		
 		self.motion = move_and_slide(self.motion.rotated(self.get_rotation()))
+
+		
+
+func _set_animation(new_animation = ""):
+	if (self.current_animation == new_animation):
+		return
+	
+	if (new_animation == ""):
+		LeftTreadAnimationPlayer.stop()
+		RightTreadAnimationPlayer.stop()
+		self.current_animation = ""
+		return
+	
+	self.current_animation = new_animation
+	LeftTreadAnimationPlayer.play(self.current_animation)
+	RightTreadAnimationPlayer.play(self.current_animation)
 
 func enter():
 	# Enable Vehicle
