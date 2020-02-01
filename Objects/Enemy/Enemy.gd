@@ -8,7 +8,7 @@ export (int) var speed = 40	# Max speed of enemy movement
 export (bool) var hasPart = false # Is enemey holding a vehicle part?
 
 # Weights for various part types
-enum WEIGHTS{
+enum WEIGHTS {
 	SMALL = 1,
 	MEDIUM = 2,
 	LARGE = 3
@@ -73,10 +73,15 @@ func on_hit_vehicle():
 		# Set new target (turn around and move far away)
 		target = (target - self.position) * -1
 		target = target.normalized() * 2000
-		# TODO: collect part from vehicle
 
 func on_hit_player():
 	if hasPart:
 		hasPart = false
-		# TODO: die & drop part
+		# Drop the part as a collectible and die
+		var droppedPart = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
+		droppedPart.position = self.position
+		droppedPart.set_weight(partType)
+		get_parent().add_child(droppedPart)
+
+		self.queue_free()
 	pass
