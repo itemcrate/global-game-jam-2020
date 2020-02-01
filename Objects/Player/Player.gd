@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 onready var ray = $RayCast2D
 
-var heldCollectible = null
+var held_collectibles: Array = []
 var motion: Vector2 = Vector2()
 var speed: int = 80
 
@@ -40,9 +40,10 @@ func get_input():
 		elif collider.is_in_group("Enemy"):
 			collider.on_hit_by_player()
 		elif collider.is_in_group("Vehicle"):
-			if self.heldCollectible:
-				self.heldCollectible.deposit()
-				self.heldCollectible = null
+			if self.held_collectibles.size() > 0:
+				for part in self.held_collectibles:
+					part.deposit()
+				self.held_collectibles = []
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
 

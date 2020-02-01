@@ -106,6 +106,10 @@ func _set_animation(new_left_animation = "", new_right_animation = ""):
 func enter():
 	# Enable Vehicle
 	self.is_active = true
+	# Before we enter the vehicle, we have to deposit all held collectibles
+	if self.nearby_passenger.held_collectibles.size() > 0:
+		for part in self.nearby_passenger.held_collectibles:
+			part.deposit()
 	self.nearby_passenger.queue_free()
 	
 	# Start Animation
