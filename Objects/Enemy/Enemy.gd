@@ -83,6 +83,8 @@ func on_hit_by_player():
 		droppedPart.set_weight(partType)
 		get_parent().add_child(droppedPart)
 
+		WorldState.increment_enemy_tally()
+
 		self.queue_free()
 
 func on_attack_player():
