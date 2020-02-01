@@ -2,6 +2,7 @@ extends Node
 
 var vehicle_health
 var vehicle_location
+var enemy_tally = 0
 
 func _ready():
 	# Double Window Resolution & Center
@@ -41,3 +42,13 @@ func decrement_vehicle_health(amount):
 		Transition.fade_to("res://Screens/GameOver/GameOver.tscn")
 	else:
 		self.vehicle_health -= amount
+
+# Enemy Tally
+func get_enemy_tally():
+	return self.enemy_tally
+
+func set_enemy_tally(count):
+	self.enemy_tally = count
+
+func increment_enemy_tally():
+	self.enemy_tally += 1
