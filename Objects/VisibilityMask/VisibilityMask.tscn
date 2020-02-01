@@ -6,7 +6,7 @@
 [node name="VisibilityMask" type="CanvasLayer"]
 
 [node name="SpotlightSprite" type="Sprite" parent="."]
-modulate = Color( 0.0313726, 0.0784314, 0.117647, 0.784314 )
+modulate = Color( 0.0313726, 0.0784314, 0.117647, 1 )
 material = ExtResource( 2 )
 position = Vector2( 160, 96 )
 z_index = 1
