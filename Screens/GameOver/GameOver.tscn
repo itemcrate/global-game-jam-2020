@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Fonts/HelvetiPixel_16.tres" type="DynamicFont" id=1]
+
+[node name="GameOver" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+margin_top = 79.0
+margin_right = 320.0
+margin_bottom = 93.0
+custom_fonts/font = ExtResource( 1 )
+text = "Game Over"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
