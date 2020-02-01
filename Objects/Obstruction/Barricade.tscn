@@ -7,7 +7,7 @@
 extents = Vector2( 8.17341, 8.07483 )
 
 [node name="Barricade" type="StaticBody2D" groups=[
-"obstructions",
+"Obstructions",
 ]]
 script = ExtResource( 2 )
 
