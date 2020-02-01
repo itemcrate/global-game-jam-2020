@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Resources/Sprites/vehicle_base.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.gd" type="Script" id=2]
@@ -6,12 +6,31 @@
 [ext_resource path="res://Resources/Sprites/vehicle_tread.png" type="Texture" id=4]
 [ext_resource path="res://Resources/Animations/VehicleTread_Forward.tres" type="Animation" id=5]
 [ext_resource path="res://Resources/Animations/VehicleTread_Reverse.tres" type="Animation" id=6]
+[ext_resource path="res://Resources/Audio/sound_engine_start.wav" type="AudioStream" id=7]
+[ext_resource path="res://Resources/Audio/ambience_engine_idle.ogg" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22, 22 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Default"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 0 ), Vector2( -1, 0 ) ]
+}
 
 [node name="Vehicle" type="KinematicBody2D" groups=[
 "Vehicle",
@@ -47,6 +66,11 @@ anims/Reverse = ExtResource( 6 )
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+offset = Vector2( -0.779733, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Body"]
+playback_speed = 2.0
+anims/Default = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -55,3 +79,10 @@ current = true
 position = Vector2( -24, -8 )
 
 [node name="VisibilityMask" parent="." instance=ExtResource( 3 )]
+
+[node name="EngineIdleAmbiencePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="EngineStartSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = 6.0

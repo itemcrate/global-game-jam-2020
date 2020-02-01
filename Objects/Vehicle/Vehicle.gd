@@ -6,6 +6,9 @@ onready var PlayerExitPosition = get_node("PlayerExitPosition")
 onready var PlayerDetector = get_node("PlayerDetector")
 onready var LeftTreadAnimationPlayer = get_node("LeftTread/AnimationPlayer")
 onready var RightTreadAnimationPlayer = get_node("RightTread/AnimationPlayer")
+onready var BodyAnimationPlayer = get_node("Body/AnimationPlayer")
+onready var EngineIdleAmbiencePlayer = get_node("EngineIdleAmbiencePlayer")
+onready var EngineStartSoundPlayer = get_node("EngineStartSoundPlayer")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -53,8 +56,7 @@ func _physics_process(_delta):
 			self._set_animation()
 		
 		self.motion = move_and_slide(self.motion.rotated(self.get_rotation()))
-		print("Left Animation:", LeftTreadAnimationPlayer.is_playing())
-		print("Right Animation:", RightTreadAnimationPlayer.is_playing())
+		
 func _set_animation(new_left_animation = "", new_right_animation = ""):
 	# Reset When No Animations Provided
 	if (
@@ -97,10 +99,24 @@ func enter():
 	# Enable Vehicle
 	self.is_active = true
 	self.nearby_passenger.queue_free()
+	
+	# Start Animation
+	BodyAnimationPlayer.play("Default")
+	
+	# Start Audio
+	EngineStartSoundPlayer.play()
+	EngineIdleAmbiencePlayer.play()
 
 func exit():
 	# Disable Vehicle
 	self.is_active = false
+	
+	# Stop Animation
+	BodyAnimationPlayer.stop()
+	
+	# Stop Audio
+	EngineStartSoundPlayer.stop()
+	EngineIdleAmbiencePlayer.stop()
 	
 	# Spawn Player
 	var player_instance = Player.instance()
