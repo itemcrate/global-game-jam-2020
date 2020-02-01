@@ -10,7 +10,6 @@ func _ready():
 	# Connect Transition Timer
 	TransitionTimer.connect("timeout", self, "_on_transition_timer_timeout")
 	
-	
 func _input(event):
 	if (event.is_action_pressed("debug")):
 		AnimationPlayer.play("Default")
