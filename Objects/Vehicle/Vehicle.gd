@@ -12,6 +12,8 @@ onready var EngineStartSoundPlayer = get_node("EngineStartSoundPlayer")
 onready var EngineStopSoundPlayer = get_node("EngineStopSoundPlayer")
 onready var LeftTreadParticles2D = get_node("LeftTread/Particles2D")
 onready var RightTreadParticles2D = get_node("RightTread/Particles2D")
+onready var BattleMusicPlayer = get_node("BattleMusicPlayer")
+onready var EnemyDetector = get_node("EnemyDetector")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -19,10 +21,13 @@ var is_active = false
 var nearby_passenger = null
 var left_animation = null
 var right_animation = null
+var enemy_count = 0
 
 func _ready():
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
 	PlayerDetector.connect("body_exited", self, "_on_player_detector_body_exited")
+	EnemyDetector.connect("body_entered", self, "_on_enemy_detector_body_entered")
+	EnemyDetector.connect("body_exited", self, "_on_enemy_detector_body_exited")
 	
 func _input(event):
 	if (event.is_action_pressed("vehicle_enter")):
@@ -145,3 +150,21 @@ func _on_player_detector_body_exited(body):
 		return
 	
 	self.nearby_passenger = null
+	
+func _on_enemy_detector_body_entered(body):
+	if (!body.is_in_group("Enemy")):
+		return
+	
+	self.enemy_count += 1
+	
+	if (!BattleMusicPlayer.is_playing()):
+		BattleMusicPlayer.play()
+	
+func _on_enemy_detector_body_exited(body):
+	if (!body.is_in_group("Enemy")):
+		return
+	
+	self.enemy_count -= 1
+	
+	if (self.enemy_count == 0):
+		BattleMusicPlayer.stop()
