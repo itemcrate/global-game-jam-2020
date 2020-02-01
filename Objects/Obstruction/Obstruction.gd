@@ -7,19 +7,19 @@ extends StaticBody2D
 
 # Shared properties include:
 # - Decay Time: This essentially functions as HP, with time remaining for a destroy action to remove it.
-# - isDescrutible flag: Can this obstruction be removed in the first place?
+# - isDestructible flag: Can this obstruction be removed in the first place?
 
 onready var timer = $Timer
 
 var decayTime: float = 3.00
-var isDescrutible: bool = true
+var isDestructible: bool = true
 
 func _ready():
 	timer.set_wait_time(decayTime)
 
 # This gets called by the player upon their raycast colliding with obstruction objects
 func damage():
-	if !isDescrutible:
+	if !isDestructible:
 		return
 
 	if timer.is_stopped():
@@ -31,7 +31,7 @@ func damage():
 
 # This is called when a user temporarily stops their action/input for removing the obstruction
 func stopDamage():
-	if !isDescrutible:
+	if !isDestructible:
 		return
 	timer.set_paused(true)
 

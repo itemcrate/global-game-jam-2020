@@ -19,5 +19,6 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+scale = Vector2( 1, 2 )
 enabled = true
-cast_to = Vector2( -16, 0 )
+cast_to = Vector2( -10, 0 )
