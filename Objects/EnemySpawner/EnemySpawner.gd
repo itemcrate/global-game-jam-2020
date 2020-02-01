@@ -31,7 +31,5 @@ func spawn_enemy(count = 1):
 	has_spawned = true
 
 func _on_body_entered(body):
-	if (self.has_spawned && (!body.is_in_group("Player") || !body.is_in_group('Vehicle'))):
-		return
-	
-	spawn_enemy(self.spawn_size)
+	if (!self.has_spawned && (body.is_in_group("Player") || body.is_in_group('Vehicle'))):
+		spawn_enemy(self.spawn_size)
