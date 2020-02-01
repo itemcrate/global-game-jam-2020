@@ -2,13 +2,14 @@ extends KinematicBody2D
 
 onready var ray = $RayCast2D
 
+var heldCollectible = null
 var motion: Vector2 = Vector2()
 var speed: int = 80
 
 func _ready():
 	pass
 	
-func _input(event):
+func _input(_event):
 	pass
 		
 func get_input():
@@ -31,13 +32,20 @@ func get_input():
 
 	# Detect collision and obstruction removal
 	if Input.is_action_pressed("player_action") && ray.is_colliding():
-		if ray.get_collider().is_in_group("obstructions"):
-			ray.get_collider().damage()
-		if ray.get_collider().is_in_group("Enemy"):
+		var collider = ray.get_collider()
+		# When colliding with an obstruction, the action is to remove it
+		if collider.is_in_group("Obstructions"):
+			collider.damage()
+		# When colliding with the vehicle, the action is to deposit your collectibles into it
+		elif ray.get_collider().is_in_group("Enemy"):
 			ray.get_collider().on_hit_by_player()
+		elif ray.get_collider().is_in_group("Vehicle"):
+			if self.heldCollectible:
+				self.heldCollectible.deposit()
+				self.heldCollectible = null
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("obstructions"):
 		ray.get_collider().stopDamage()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_input()
 	move_and_slide(self.motion)

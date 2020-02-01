@@ -1,17 +1,25 @@
 extends Area2D
 
 # This is the abstract/parent collectible class. It should not be used directly / instanced as a child scene.
-# Instead, each collectible type should extend this (fuel, weapons, etc.)
+# Instead, each collectible type should extend this.
+
+onready var collider = $Collider
+onready var sprite = $Sprite
 
 func _ready():
-	pass # Replace with function body.
+	pass
 
 # Called when the player picks up this objects.
-# In this abstract level, we'll simply queue_free this object.
+# In this abstract level, we hide the sprite and disable collision so it seems to disappear.
+# We don't queue_free yet so that we can call deposit where necessary.
 # Children will implement their own logic before calling `.collect()`
-func collect():
-	self.queue_free()
+func collect(entity):
+	collider.call_deferred('set_disabled', true)
+	sprite.hide()
+
+# Called when the player deposits this object into the vehicle.
+func deposit():
+	call_deferred('queue_free')
 
 func _on_Collectible_body_entered(body):
-	# You may have to wire this signal up for each child, as I don't think the children receive the signals of their parents.
-	collect()
+	collect(body)

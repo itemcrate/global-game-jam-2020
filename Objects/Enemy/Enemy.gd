@@ -2,13 +2,13 @@ extends KinematicBody2D
 
 onready var Vehicle = get_parent().get_node("Vehicle")
 onready var ray = $RayCast2D
-var rayLength = 16
+var rayLength = 10
 
 export (int) var speed = 40	# Max speed of enemy movement
 export (bool) var hasPart = false # Is enemey holding a vehicle part?
 
 # Weights for various part types
-enum WEIGHTS{
+enum WEIGHTS {
 	SMALL = 1,
 	MEDIUM = 2,
 	LARGE = 3
@@ -64,21 +64,26 @@ func _physics_process(delta):
 
 func on_hit_vehicle():
 	if !hasPart:
-		# collect part
+		# Collect part and decrement vehicle health
 		hasPart = true
-		partType = randi()%3+1 # int from 1 to 3
-		#print("Enemy: hit vehicle")
-		#print(partType)
+		partType = randi()%3 + 1 # int from 1 to 3
+
+		WorldState.decrement_vehicle_health(10 * partType) # This is just for dev, with larger weight more obviously affecting HP
 
 		# Set new target (turn around and move far away)
 		target = (target - self.position) * -1
 		target = target.normalized() * 2000
-		# TODO: collect part from vehicle
 
 func on_hit_by_player():
 	if hasPart:
 		hasPart = false
-		# TODO: die & drop part
+		# Drop the part as a collectible and die
+		var droppedPart = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
+		droppedPart.position = self.position
+		droppedPart.set_weight(partType)
+		get_parent().add_child(droppedPart)
+
+		self.queue_free()
 
 func on_attack_player():
 	pass # TODO: stun player
