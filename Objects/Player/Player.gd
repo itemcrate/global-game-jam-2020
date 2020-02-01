@@ -36,6 +36,8 @@ func get_input():
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("obstructions"):
 		ray.get_collider().stopDamage()
 
+	# TODO: detect collision with Enemy, call Enemy's on_hit_player()
+
 func _physics_process(delta):
 	get_input()
 	move_and_slide(self.motion)
