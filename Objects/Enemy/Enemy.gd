@@ -17,8 +17,6 @@ func get_ai_input():
 func move_toward(_target):
 	pass
 
-
-
 func _physics_process(delta):
 	get_ai_input()
 	velocity = move_and_slide(velocity)
