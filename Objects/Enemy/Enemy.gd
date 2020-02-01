@@ -1,15 +1,28 @@
 extends KinematicBody2D
 
 onready var Vehicle = get_parent().get_node("Vehicle")
-onready var Player = get_parent().get_node("Player")
 onready var ray = $RayCast2D
 var rayLength = 16
 
 export (int) var speed = 40	# Max speed of enemy movement
 export (bool) var hasPart = false # Is enemey holding a vehicle part?
 
-# Types: 0 => nothing; 1 => small; 2 => medium; 3 => large
-var partType = 0
+# Weights for various part types
+enum WEIGHTS{
+	SMALL = 1,
+	MEDIUM = 2,
+	LARGE = 3
+}
+
+# Assign weight value (larger part => slower movement)
+const WEIGHT_VALUE = {
+	SMALL = 0.8,
+	MEDIUM = 0.6,
+	LARGE = 0.4
+}
+
+# Store current weight
+var partType = self.WEIGHTS.SMALL
 
 var velocity = Vector2() # Velocity vecotr
 var target = Vector2() # Position enemy heads toward
@@ -17,8 +30,6 @@ var target = Vector2() # Position enemy heads toward
 func ai_sense_env():
 	if !hasPart: # target vehicle
 		target = Vehicle.position
-	else:        # already running away
-		pass
 
 func ai_move_toward(_target, delta):
 	# get vector to target
@@ -28,12 +39,12 @@ func ai_move_toward(_target, delta):
 
 	# determine speed
 	if hasPart:
-		if partType == 1:   # small part
-			velocity *= (speed * 0.80)
-		elif partType == 2: # medium part
-			velocity *= (speed * 0.60)
-		elif partType == 3: # large part
-			velocity *= (speed * 0.40)
+		if partType == self.WEIGHTS.SMALL:
+			velocity *= (speed * self.WEIGHT_VALUE.SMALL)
+		elif partType == self.WEIGHTS.MEDIUM:
+			velocity *= (speed * self.WEIGHT_VALUE.MEDIUM)
+		elif partType == self.WEIGHTS.LARGE:
+			velocity *= (speed * self.WEIGHT_VALUE.LARGE)
 	else:
 		velocity *= speed
 
@@ -42,13 +53,10 @@ func ai_move_toward(_target, delta):
 
 	# detect collision
 	if ray.is_colliding():
-		if ray.get_collider() == Vehicle:
+		if ray.get_collider().is_in_group("Vehicle"):
 			on_hit_vehicle()
-		if ray.get_collider() == Player:
+		if ray.get_collider().is_in_group("Player"):
 			on_hit_player()
-		else:
-			#print("Enemy: hit something else")
-			pass
 
 func _physics_process(delta):
 	ai_sense_env()
