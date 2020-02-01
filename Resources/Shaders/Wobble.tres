@@ -1,0 +1,24 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform float speed  = 5.0;
+
+void fragment()
+{
+	// Get Sample Position  
+	vec2 uv = FRAGCOORD.xy / 1.0 / SCREEN_PIXEL_SIZE.xy;
+    
+    // Wiggle Positions (6.283185307 = Pi * 2)
+    vec2 sp;
+    sp.x = UV.x + 0.0075 * sin( TIME * speed + UV.y * 6.283185307 * 1.0);
+    sp.y = UV.y + 0.0075 * cos( TIME * speed + UV.x * 6.283185307 * 1.0);
+    
+	COLOR = texture(TEXTURE, sp);
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/speed = 5.0
