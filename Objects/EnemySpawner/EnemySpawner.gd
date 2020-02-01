@@ -26,7 +26,7 @@ func spawn_enemy(count = 1):
 		spawn_coord.y += rand_range(-10,10);
 
 		enemy_instance.set_position(spawn_coord)
-		get_tree().get_current_scene().add_child(enemy_instance)
+		get_tree().get_current_scene().call_deferred('add_child', enemy_instance)
 
 	has_spawned = true
 
