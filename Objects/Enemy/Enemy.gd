@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
-export (int) var speed = 200
+export (int) var speed = 50
 
 var velocity = Vector2()
 var target = Vector2()
 
 func ai_sense_env():
-	pass
+	target = Vector2(200,100)
 
 func get_ai_input():
 	velocity = Vector2()
@@ -14,9 +14,11 @@ func get_ai_input():
 	velocity.y += 1
 	velocity = velocity.normalized() * speed
 
-func move_toward(_target):
-	pass
+func ai_move_toward(_target):
+	velocity = _target - self.position
+	velocity = velocity.normalized() * speed
+	velocity = move_and_slide(velocity)
 
 func _physics_process(delta):
-	get_ai_input()
-	velocity = move_and_slide(velocity)
+	ai_sense_env()
+	ai_move_toward(target)
