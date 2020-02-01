@@ -1,15 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Objects/Vehicle/Vehicle.tscn" type="PackedScene" id=1]
 
 [node name="Sandbox" type="Node2D"]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 78.3522
-margin_top = 75.6504
-margin_right = 221.352
-margin_bottom = 103.65
-bbcode_enabled = true
-bbcode_text = "WHAT UP BITCHES"
-text = "WHAT UP BITCHES"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Vehicle" parent="." instance=ExtResource( 1 )]
