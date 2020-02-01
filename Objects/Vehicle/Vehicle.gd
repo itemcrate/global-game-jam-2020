@@ -9,6 +9,9 @@ onready var RightTreadAnimationPlayer = get_node("RightTread/AnimationPlayer")
 onready var BodyAnimationPlayer = get_node("Body/AnimationPlayer")
 onready var EngineIdleAmbiencePlayer = get_node("EngineIdleAmbiencePlayer")
 onready var EngineStartSoundPlayer = get_node("EngineStartSoundPlayer")
+onready var EngineStopSoundPlayer = get_node("EngineStopSoundPlayer")
+onready var LeftTreadParticles2D = get_node("LeftTread/Particles2D")
+onready var RightTreadParticles2D = get_node("RightTread/Particles2D")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -106,6 +109,10 @@ func enter():
 	# Start Audio
 	EngineStartSoundPlayer.play()
 	EngineIdleAmbiencePlayer.play()
+	
+	# Start Particles
+	LeftTreadParticles2D.set_emitting(true)
+	RightTreadParticles2D.set_emitting(true)
 
 func exit():
 	# Disable Vehicle
@@ -114,9 +121,13 @@ func exit():
 	# Stop Animation
 	BodyAnimationPlayer.stop()
 	
-	# Stop Audio
-	EngineStartSoundPlayer.stop()
+	# Audio
+	EngineStopSoundPlayer.play()
 	EngineIdleAmbiencePlayer.stop()
+	
+	# Stop Particles
+	LeftTreadParticles2D.set_emitting(false)
+	RightTreadParticles2D.set_emitting(false)
 	
 	# Spawn Player
 	var player_instance = Player.instance()

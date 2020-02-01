@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Resources/Sprites/vehicle_base.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.gd" type="Script" id=2]
@@ -8,12 +8,32 @@
 [ext_resource path="res://Resources/Animations/VehicleTread_Reverse.tres" type="Animation" id=6]
 [ext_resource path="res://Resources/Audio/sound_engine_start.wav" type="AudioStream" id=7]
 [ext_resource path="res://Resources/Audio/ambience_engine_idle.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Resources/Audio/sound_engine_stop.wav" type="AudioStream" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 22, 22 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0.12549, 0.223529, 0.309804, 1, 0.12549, 0.223529, 0.309804, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 2.0
+flag_disable_z = true
+direction = Vector3( 0, 1, 0 )
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 6 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Default"
@@ -46,7 +66,7 @@ shape = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="LeftTread" type="Sprite" parent="."]
-position = Vector2( -19, 1 )
+position = Vector2( -19, 2 )
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -55,14 +75,28 @@ playback_speed = 1.2
 anims/Forward = ExtResource( 5 )
 anims/Reverse = ExtResource( 6 )
 
+[node name="Particles2D" type="Particles2D" parent="LeftTread"]
+position = Vector2( 0, 20 )
+z_index = -1
+amount = 32
+local_coords = false
+process_material = SubResource( 4 )
+
 [node name="RightTread" type="Sprite" parent="."]
-position = Vector2( 19, 1 )
+position = Vector2( 19, 2 )
 texture = ExtResource( 4 )
 hframes = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="RightTread"]
 anims/Forward = ExtResource( 5 )
 anims/Reverse = ExtResource( 6 )
+
+[node name="Particles2D" type="Particles2D" parent="RightTread"]
+position = Vector2( 0, 20 )
+z_index = -1
+amount = 32
+local_coords = false
+process_material = SubResource( 4 )
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -82,7 +116,14 @@ position = Vector2( -24, -8 )
 
 [node name="EngineIdleAmbiencePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+bus = "Ambience"
 
 [node name="EngineStartSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 volume_db = 6.0
+bus = "SFX"
+
+[node name="EngineStopSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = 6.0
+bus = "SFX"
