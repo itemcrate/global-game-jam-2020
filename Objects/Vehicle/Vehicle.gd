@@ -11,7 +11,8 @@ var motion: Vector2 = Vector2()
 var speed = 20
 var is_active = false
 var nearby_passenger = null
-var current_animation = null
+var left_animation = null
+var right_animation = null
 
 func _ready():
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
@@ -30,44 +31,62 @@ func _physics_process(_delta):
 		
 		if (Input.is_action_pressed("vehicle_forward")):
 			self.motion.y = -1 * self.speed
+			self._set_animation("Forward", "Forward")
 		elif (Input.is_action_pressed("vehicle_reverse")):
 			self.motion.y = 1 * (self.speed / 2)
+			self._set_animation("Reverse", "Reverse")
 			
 		if (Input.is_action_pressed("vehicle_left")):
 			self.set_rotation_degrees(self.get_rotation_degrees() - 1)
+			self._set_animation("Reverse", "Forward")
 			
 		if (Input.is_action_pressed("vehicle_right")):
 			self.set_rotation_degrees(self.get_rotation_degrees() + 1)
+			self._set_animation("Forward", "Reverse")
 		
-		# Set Animation
-		if (self.motion.y >= 1):
-			self._set_animation("Reverse")
-		elif (self.motion.y <= -1):
-			self._set_animation("Forward")
-		else:
+		if (
+			Input.is_action_just_released("vehicle_forward") or
+			Input.is_action_just_released("vehicle_reverse") or
+			Input.is_action_just_released("vehicle_left") or
+			Input.is_action_just_released("vehicle_right")
+		):
 			self._set_animation()
 		
 		self.motion = move_and_slide(self.motion.rotated(self.get_rotation()))
-		
-func _set_animation(new_animation = ""):
-	if (self.current_animation == new_animation):
-		return
-	
-	if (new_animation == ""):
+		print("Left Animation:", LeftTreadAnimationPlayer.is_playing())
+		print("Right Animation:", RightTreadAnimationPlayer.is_playing())
+func _set_animation(new_left_animation = "", new_right_animation = ""):
+	# Reset When No Animations Provided
+	if (
+		new_left_animation == "" and
+		new_right_animation == ""
+	):
 		LeftTreadAnimationPlayer.stop()
 		RightTreadAnimationPlayer.stop()
-		self.current_animation = ""
+		self.left_animation = ""
+		self.right_animation = ""
+		return
+	
+	# Prevent Playing Same Animation 
+	if (
+		self.left_animation == new_left_animation and
+		self.right_animation == new_right_animation
+	):
 		return
 	
 	# Update Current Animation
-	self.current_animation = new_animation
+	self.left_animation = new_left_animation
+	self.right_animation = new_right_animation
 	
 	# Set Animations
-	LeftTreadAnimationPlayer.play(self.current_animation)
-	RightTreadAnimationPlayer.play(self.current_animation)
+	LeftTreadAnimationPlayer.play(self.left_animation)
+	RightTreadAnimationPlayer.play(self.right_animation)
 	
 	# Set Animation Speed Scale
-	if (self.current_animation == "Reverse"):
+	if (
+		self.left_animation == "Reverse" and
+		self.right_animation == "Reverse"
+	):
 		LeftTreadAnimationPlayer.set_speed_scale(0.75)
 		RightTreadAnimationPlayer.set_speed_scale(0.75)
 	else:
