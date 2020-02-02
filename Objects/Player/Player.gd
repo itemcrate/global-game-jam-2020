@@ -10,6 +10,7 @@ var held_collectibles: Array = []
 var motion: Vector2 = Vector2()
 var speed: int = 80
 var animation = ""
+var attacking = false
 
 func _ready():
 	pass
@@ -39,7 +40,9 @@ func get_input():
 	self.motion = self.motion.normalized() * speed
 	
 	# Set Animation
-	if (self.motion.length()):
+	if attacking:
+		self._set_animation("Attack")
+	elif (self.motion.length()):
 		self._set_animation("Walk")
 	else:
 		self._set_animation("Idle")
@@ -63,6 +66,13 @@ func get_input():
 				set_parts_sprite("")
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
+	
+	if Input.is_action_pressed("player_action"):
+		if !attacking:
+			self.attacking = true
+	
+	if Input.is_action_just_released("player_action"):
+		self.attacking = false
 
 func set_parts_sprite(texturePath: String):
 	if (texturePath == ""):
