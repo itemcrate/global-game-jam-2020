@@ -41,5 +41,8 @@ func stopDamage():
 	# Pause the timer
 	timer.set_paused(true)
 
+func spawn_drop():
+	pass
+	
 func destroy():
 	self.queue_free()
