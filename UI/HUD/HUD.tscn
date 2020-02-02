@@ -10,8 +10,10 @@ layer = 2
 script = ExtResource( 5 )
 
 [node name="HP" type="TextureProgress" parent="."]
-margin_right = 136.0
-margin_bottom = 14.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 144.0
+margin_bottom = 22.0
 value = 50.0
 rounded = true
 texture_under = ExtResource( 2 )
