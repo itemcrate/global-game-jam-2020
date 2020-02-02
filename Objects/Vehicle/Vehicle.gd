@@ -14,6 +14,7 @@ onready var LeftTreadParticles2D = get_node("LeftTread/Particles2D")
 onready var RightTreadParticles2D = get_node("RightTread/Particles2D")
 onready var BattleMusicPlayer = get_node("BattleMusicPlayer")
 onready var EnemyDetector = get_node("EnemyDetector")
+onready var Arrow = get_node("Arrow")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -24,10 +25,14 @@ var right_animation = null
 var enemy_count = 0
 
 func _ready():
+	var visibility_mask = load("res://Objects/VisibilityMask/VisibilityMask.tscn").instance()
+	self.add_child(visibility_mask)
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
 	PlayerDetector.connect("body_exited", self, "_on_player_detector_body_exited")
 	EnemyDetector.connect("body_entered", self, "_on_enemy_detector_body_entered")
 	EnemyDetector.connect("body_exited", self, "_on_enemy_detector_body_exited")
+
+	update_arrow()
 	
 func _input(event):
 	if (event.is_action_pressed("vehicle_enter")):
@@ -37,6 +42,8 @@ func _input(event):
 			self.enter()
 	
 func _physics_process(_delta):
+	update_arrow()
+
 	if (self.is_active):
 		self.motion = Vector2()
 		
@@ -138,6 +145,9 @@ func exit():
 	var player_instance = Player.instance()
 	player_instance.set_position(PlayerExitPosition.get_global_position())
 	get_tree().get_current_scene().add_child(player_instance)
+
+func update_arrow():
+	Arrow.look_at(get_parent().get_node("Level" + String(WorldState.get_current_level())).get_node("Goal").get_global_position())
 	
 func _on_player_detector_body_entered(body):
 	if (!body.is_in_group("Player")):

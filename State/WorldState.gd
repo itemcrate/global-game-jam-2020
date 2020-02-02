@@ -1,5 +1,6 @@
 extends Node
 
+var current_level = 1
 var vehicle_health
 var vehicle_location
 var enemy_tally = 0
@@ -47,8 +48,15 @@ func decrement_vehicle_health(amount):
 func get_enemy_tally():
 	return self.enemy_tally
 
-func set_enemy_tally(count):
+func set_enemy_tally(count: int):
 	self.enemy_tally = count
 
 func increment_enemy_tally():
 	self.enemy_tally += 1
+
+# Current Level
+func get_current_level():
+	return self.current_level
+
+func set_current_level(level: int):
+	self.current_level = level
