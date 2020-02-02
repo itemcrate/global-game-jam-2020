@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 onready var Vehicle = get_parent().get_node("Vehicle")
 onready var ray = $RayCast2D
+onready var dropped_part = null
+
 var rayLength = 10
 
 export (int) var speed = 40	# Max speed of enemy movement
@@ -31,7 +33,7 @@ func ai_sense_env():
 	if !hasPart: # target vehicle
 		target = Vehicle.position
 
-func ai_move_toward(_target, delta):
+func ai_move_toward(_target, _delta):
 	# get vector to target
 	velocity = _target - self.position
 	velocity = velocity.normalized()
@@ -64,9 +66,14 @@ func _physics_process(delta):
 
 func on_hit_vehicle():
 	if !hasPart:
-		# Collect part and decrement vehicle health
+		# Steal the part, damage the vehicle, and carry the part away
 		hasPart = true
-		partType = randi()%3 + 1 # int from 1 to 3
+		partType = randi() % 3 + 1
+
+		dropped_part = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
+		dropped_part.position = self.position
+		self.add_child(dropped_part)
+		dropped_part.set_weight(partType)
 
 		WorldState.decrement_vehicle_health(10 * partType) # This is just for dev, with larger weight more obviously affecting HP
 
@@ -77,11 +84,7 @@ func on_hit_vehicle():
 func on_hit_by_player():
 	if hasPart:
 		hasPart = false
-		# Drop the part as a collectible and die
-		var droppedPart = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
-		droppedPart.position = self.position
-		droppedPart.set_weight(partType)
-		get_parent().add_child(droppedPart)
+		dropped_part.position = self.position
 
 	WorldState.increment_enemy_tally()
 

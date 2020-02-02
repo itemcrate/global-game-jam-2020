@@ -13,7 +13,7 @@ func _ready():
 # In this abstract level, we hide the sprite and disable collision so it seems to disappear.
 # We don't queue_free yet so that we can call deposit where necessary.
 # Children will implement their own logic before calling `.collect()`
-func collect(entity):
+func collect(_entity):
 	collider.call_deferred('set_disabled', true)
 	sprite.hide()
 
@@ -22,4 +22,5 @@ func deposit():
 	call_deferred('queue_free')
 
 func _on_Collectible_body_entered(body):
-	collect(body)
+	if body.is_in_group("Player"):
+		collect(body)
