@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 onready var AnimationPlayer = get_node("AnimationPlayer")
+onready var FixAudioPlayer = get_node("FixAudioPlayer")
 onready var Sprite = get_node("Sprite")
 onready var LootSprite = get_node("LootSprite")
 onready var HitBarrierAudioPlayer = get_node("HitBarrierAudioPlayer")
@@ -65,6 +66,7 @@ func get_input():
 			collider.on_hit_by_player()
 		elif collider.is_in_group("Vehicle"):
 			if self.held_collectibles.size() > 0:
+				FixAudioPlayer.play()
 				for part in self.held_collectibles:
 					part.deposit()
 				self.held_collectibles = []
