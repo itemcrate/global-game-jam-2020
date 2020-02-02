@@ -164,7 +164,6 @@ func exit():
 	player_instance.set_position(PlayerExitPosition.get_global_position())
 	get_tree().get_current_scene().add_child(player_instance)
 
-
 func update_arrow():
 	Arrow.look_at(get_parent().get_node("Level" + String(WorldState.get_current_level())).get_node("Goal").get_global_position())
 

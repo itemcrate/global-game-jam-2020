@@ -141,5 +141,5 @@ bus = "Music"
 shape = SubResource( 7 )
 
 [node name="Arrow" type="Sprite" parent="."]
-position = Vector2( 0, -31.1244 )
+position = Vector2( 0, -32 )
 texture = ExtResource( 3 )
