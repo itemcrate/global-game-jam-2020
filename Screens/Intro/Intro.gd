@@ -15,4 +15,4 @@ func _input(event):
 		Transition.fade_to("res://Screens/Main/Main.tscn")
 
 func _on_transition_timer_timeout():
-	Transition.fade_to("res://Screens/Main/Main.tscn")
+	Transition.fade_to("res://Screens/Title/Title.tscn")
