@@ -25,9 +25,9 @@ var right_animation = null
 var enemy_count = 0
 
 const SPEEDS = {
-	SLOW = 5,
-	NORMAL = 20,
-	FAST = 40
+	SLOW = 10,
+	NORMAL = 40,
+	FAST = 70 
 }
 
 func _ready():
