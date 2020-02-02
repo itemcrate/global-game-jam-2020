@@ -1,8 +1,8 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Resources/Sprites/vehicle_base.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.gd" type="Script" id=2]
-[ext_resource path="res://Objects/VisibilityMask/VisibilityMask.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Resources/Sprites/hud-arrow.png" type="Texture" id=3]
 [ext_resource path="res://Resources/Sprites/vehicle_tread.png" type="Texture" id=4]
 [ext_resource path="res://Resources/Animations/VehicleTread_Forward.tres" type="Animation" id=5]
 [ext_resource path="res://Resources/Animations/VehicleTread_Reverse.tres" type="Animation" id=6]
@@ -10,9 +10,11 @@
 [ext_resource path="res://Resources/Audio/ambience_engine_idle.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Resources/Audio/sound_engine_stop.wav" type="AudioStream" id=9]
 [ext_resource path="res://Resources/Audio/music_battle.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Objects/VisibilityMask/VisibilityMask.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Resources/Sprites/particle_smoke.png" type="Texture" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 22, 22 )
+extents = Vector2( 19, 22 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0
@@ -55,12 +57,38 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=7]
 radius = 112.0
 
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0.0148148, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.784314, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=10]
+_data = [ Vector2( 0, 0.347227 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+emission_shape = 1
+emission_sphere_radius = 8.0
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 45.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 9 )
+
 [node name="Vehicle" type="KinematicBody2D" groups=[
 "Vehicle",
 ]]
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1, 1 )
 shape = SubResource( 1 )
 
 [node name="PlayerDetector" type="Area2D" parent="."]
@@ -69,7 +97,7 @@ shape = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="LeftTread" type="Sprite" parent="."]
-position = Vector2( -19, 2 )
+position = Vector2( -16, 1 )
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -86,7 +114,7 @@ local_coords = false
 process_material = SubResource( 5 )
 
 [node name="RightTread" type="Sprite" parent="."]
-position = Vector2( 19, 2 )
+position = Vector2( 15, 1 )
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -115,8 +143,6 @@ current = true
 [node name="PlayerExitPosition" type="Position2D" parent="."]
 position = Vector2( -24, -8 )
 
-[node name="VisibilityMask" parent="." instance=ExtResource( 3 )]
-
 [node name="EngineIdleAmbiencePlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 volume_db = -10.0
@@ -141,3 +167,20 @@ bus = "Music"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
 shape = SubResource( 7 )
+
+[node name="SmokeParticles" type="Particles2D" parent="."]
+position = Vector2( 0, 16 )
+emitting = false
+amount = 32
+lifetime = 2.0
+preprocess = 4.0
+local_coords = false
+draw_order = 1
+process_material = SubResource( 12 )
+texture = ExtResource( 12 )
+
+[node name="VisibilityMask" parent="." instance=ExtResource( 11 )]
+
+[node name="Arrow" type="Sprite" parent="."]
+position = Vector2( 0, -32 )
+texture = ExtResource( 3 )

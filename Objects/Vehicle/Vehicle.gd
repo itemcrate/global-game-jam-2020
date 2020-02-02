@@ -14,6 +14,8 @@ onready var LeftTreadParticles2D = get_node("LeftTread/Particles2D")
 onready var RightTreadParticles2D = get_node("RightTread/Particles2D")
 onready var BattleMusicPlayer = get_node("BattleMusicPlayer")
 onready var EnemyDetector = get_node("EnemyDetector")
+onready var SmokeParticles = get_node("SmokeParticles")
+onready var Arrow = get_node("Arrow")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -24,25 +26,37 @@ var right_animation = null
 var enemy_count = 0
 
 const SPEEDS = {
-	SLOW = 5,
-	NORMAL = 20,
-	FAST = 40
+	SLOW = 10,
+	NORMAL = 40,
+	FAST = 70
 }
 
 func _ready():
+	var visibility_mask = load("res://Objects/VisibilityMask/VisibilityMask.tscn").instance()
+	self.add_child(visibility_mask)
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
 	PlayerDetector.connect("body_exited", self, "_on_player_detector_body_exited")
 	EnemyDetector.connect("body_entered", self, "_on_enemy_detector_body_entered")
 	EnemyDetector.connect("body_exited", self, "_on_enemy_detector_body_exited")
-	
+
+	update_arrow()
+
 func _input(event):
 	if (event.is_action_pressed("vehicle_enter")):
 		if (self.is_active):
 			self.exit()
 		elif (!self.is_active and self.nearby_passenger):
 			self.enter()
-	
+
 func _physics_process(_delta):
+	if (
+		WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold() and
+		!SmokeParticles.is_emitting()
+	):
+		SmokeParticles.set_emitting(true)
+
+	update_arrow()
+
 	if (self.is_active):
 		# Set speed based on health
 		if WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold():
@@ -53,22 +67,22 @@ func _physics_process(_delta):
 			self.speed_normal()
 
 		self.motion = Vector2()
-		
+
 		if (Input.is_action_pressed("vehicle_forward")):
 			self.motion.y = -1 * self.speed
 			self._set_animation("Forward", "Forward")
 		elif (Input.is_action_pressed("vehicle_reverse")):
 			self.motion.y = 1 * (self.speed / 2)
 			self._set_animation("Reverse", "Reverse")
-			
+
 		if (Input.is_action_pressed("vehicle_left")):
 			self.set_rotation_degrees(self.get_rotation_degrees() - 1)
 			self._set_animation("Reverse", "Forward")
-			
+
 		if (Input.is_action_pressed("vehicle_right")):
 			self.set_rotation_degrees(self.get_rotation_degrees() + 1)
 			self._set_animation("Forward", "Reverse")
-		
+
 		if (
 			Input.is_action_just_released("vehicle_forward") or
 			Input.is_action_just_released("vehicle_reverse") or
@@ -76,9 +90,9 @@ func _physics_process(_delta):
 			Input.is_action_just_released("vehicle_right")
 		):
 			self._set_animation()
-		
+
 		self.motion = move_and_slide(self.motion.rotated(self.get_rotation()))
-		
+
 func _set_animation(new_left_animation = "", new_right_animation = ""):
 	# Reset When No Animations Provided
 	if (
@@ -90,22 +104,22 @@ func _set_animation(new_left_animation = "", new_right_animation = ""):
 		self.left_animation = ""
 		self.right_animation = ""
 		return
-	
-	# Prevent Playing Same Animation 
+
+	# Prevent Playing Same Animation
 	if (
 		self.left_animation == new_left_animation and
 		self.right_animation == new_right_animation
 	):
 		return
-	
+
 	# Update Current Animation
 	self.left_animation = new_left_animation
 	self.right_animation = new_right_animation
-	
+
 	# Set Animations
 	LeftTreadAnimationPlayer.play(self.left_animation)
 	RightTreadAnimationPlayer.play(self.right_animation)
-	
+
 	# Set Animation Speed Scale
 	if (
 		self.left_animation == "Reverse" and
@@ -116,7 +130,7 @@ func _set_animation(new_left_animation = "", new_right_animation = ""):
 	else:
 		LeftTreadAnimationPlayer.set_speed_scale(1.5)
 		RightTreadAnimationPlayer.set_speed_scale(1.5)
-		
+
 func enter():
 	# Enable Vehicle
 	self.is_active = true
@@ -125,14 +139,14 @@ func enter():
 		for part in self.nearby_passenger.held_collectibles:
 			part.deposit()
 	self.nearby_passenger.queue_free()
-	
+
 	# Start Animation
 	BodyAnimationPlayer.play("Default")
-	
+
 	# Start Audio
 	EngineStartSoundPlayer.play()
 	EngineIdleAmbiencePlayer.play()
-	
+
 	# Start Particles
 	LeftTreadParticles2D.set_emitting(true)
 	RightTreadParticles2D.set_emitting(true)
@@ -140,22 +154,25 @@ func enter():
 func exit():
 	# Disable Vehicle
 	self.is_active = false
-	
+
 	# Stop Animation
 	BodyAnimationPlayer.stop()
-	
+
 	# Audio
 	EngineStopSoundPlayer.play()
 	EngineIdleAmbiencePlayer.stop()
-	
+
 	# Stop Particles
 	LeftTreadParticles2D.set_emitting(false)
 	RightTreadParticles2D.set_emitting(false)
-	
+
 	# Spawn Player
 	var player_instance = Player.instance()
 	player_instance.set_position(PlayerExitPosition.get_global_position())
 	get_tree().get_current_scene().add_child(player_instance)
+
+func update_arrow():
+	Arrow.look_at(get_parent().get_node("Level" + String(WorldState.get_current_level())).get_node("Goal").get_global_position())
 
 func speed_slow():
 	self.speed = self.SPEEDS.SLOW
@@ -169,29 +186,29 @@ func speed_fast():
 func _on_player_detector_body_entered(body):
 	if (!body.is_in_group("Player")):
 		return
-	
+
 	self.nearby_passenger = body
-	
+
 func _on_player_detector_body_exited(body):
 	if (!body.is_in_group("Player")):
 		return
-	
+
 	self.nearby_passenger = null
-	
+
 func _on_enemy_detector_body_entered(body):
 	if (!body.is_in_group("Enemy")):
 		return
-	
+
 	self.enemy_count += 1
-	
+
 	if (!BattleMusicPlayer.is_playing()):
 		BattleMusicPlayer.play()
-	
+
 func _on_enemy_detector_body_exited(body):
 	if (!body.is_in_group("Enemy")):
 		return
-	
+
 	self.enemy_count -= 1
-	
+
 	if (self.enemy_count == 0):
 		BattleMusicPlayer.stop()

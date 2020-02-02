@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Objects/Collectibles/Parts/Parts.gd" type="Script" id=1]
-[ext_resource path="res://Resources/Sprites/test-collectible.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Sprites/part-large.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Audio/sound_pickup.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.12501, 4.02972 )
@@ -17,4 +18,7 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+
+[node name="PickupAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
 [connection signal="body_entered" from="." to="." method="_on_Collectible_body_entered"]

@@ -2,8 +2,15 @@ extends KinematicBody2D
 
 onready var Vehicle = get_parent().get_node("Vehicle")
 onready var ray = $RayCast2D
-var rayLength = 10
+onready var AnimationPlayer = $AnimationPlayer
+onready var loot_sprite = $LootSprite
+onready var HitAudioPlayer = $HitAudioPlayer
+
+var animation = ""
 var disappearDist = 130
+var dropped_part = null
+var dropped_part_texture = ""
+var rayLength = 10
 
 export (int) var speed = 40	# Max speed of enemy movement
 export (bool) var hasPart = false # Is enemey holding a vehicle part?
@@ -36,7 +43,7 @@ func ai_sense_env():
 		if self.disappearDist < self.position.distance_to(Vehicle.position):
 			self.queue_free()
 
-func ai_move_toward(_target, delta):
+func ai_move_toward(_target, _delta):
 	# get vector to target
 	velocity = _target - self.position
 	velocity = velocity.normalized()
@@ -52,6 +59,12 @@ func ai_move_toward(_target, delta):
 			velocity *= (speed * self.WEIGHT_VALUE.LARGE)
 	else:
 		velocity *= speed
+
+	# Set Animation
+	if (self.velocity.length()):
+		self._set_animation("Walk")
+	else:
+		self._set_animation("Idle")
 
 	# move
 	move_and_slide(velocity)
@@ -69,9 +82,24 @@ func _physics_process(delta):
 
 func on_hit_vehicle():
 	if !hasPart:
-		# Collect part and decrement vehicle health
+		# Steal the part, damage the vehicle, and carry the part away
+		HitAudioPlayer.play()
+
 		hasPart = true
-		partType = randi()%3 + 1 # int from 1 to 3
+		partType = randi() % 3 + 1
+
+		var random_int = randi() % 2 + 1
+	
+		if partType == self.WEIGHTS.SMALL:
+			dropped_part_texture = "res://Resources/Sprites/part-small-" + String(random_int) + ".png"
+			loot_sprite.position.y -= 10
+		elif partType == self.WEIGHTS.MEDIUM:
+			dropped_part_texture = "res://Resources/Sprites/part-medium-" + String(random_int) + ".png"
+			loot_sprite.position.y -= 12
+		else:
+			dropped_part_texture = "res://Resources/Sprites/part-large.png"
+			loot_sprite.position.y -= 16
+		loot_sprite.set_texture(load(dropped_part_texture))
 
 		WorldState.decrement_vehicle_health(10 * partType) # This is just for dev, with larger weight more obviously affecting HP
 
@@ -82,16 +110,24 @@ func on_hit_vehicle():
 func on_hit_by_player():
 	if hasPart:
 		hasPart = false
-		# Drop the part as a collectible and die
-		var droppedPart = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
-		droppedPart.position = self.position
-		droppedPart.set_weight(partType)
-		get_parent().add_child(droppedPart)
+
+		dropped_part = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
+		dropped_part.position = self.position
+		dropped_part.set_weight(partType)
+		self.get_parent().add_child(dropped_part)
+		dropped_part.set_sprite_texture(dropped_part_texture)
 
 	WorldState.increment_enemy_tally()
 
 	self.queue_free()
 
 func on_attack_player():
-	# TODO: hit sound
-	pass # TODO: stun player
+	HitAudioPlayer.play()
+	# TODO: stun player
+
+func _set_animation(new_animation = ""):
+	if (self.animation == new_animation):
+		return
+		
+	self.animation = new_animation
+	AnimationPlayer.play(self.animation)

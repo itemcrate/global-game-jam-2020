@@ -2,8 +2,9 @@ extends KinematicBody2D
 
 onready var AnimationPlayer = get_node("AnimationPlayer")
 onready var Sprite = get_node("Sprite")
-
-onready var ray = $RayCast2D
+onready var LootSprite = get_node("LootSprite")
+onready var HitBarrierAudioPlayer = get_node("HitBarrierAudioPlayer")
+onready var ray = get_node("RayCast2D")
 
 var held_collectibles: Array = []
 var motion: Vector2 = Vector2()
@@ -49,6 +50,8 @@ func get_input():
 		# When colliding with an obstruction, the action is to remove it
 		if collider.is_in_group("Obstructions"):
 			collider.damage()
+			if !HitBarrierAudioPlayer.playing:
+				HitBarrierAudioPlayer.play()
 		# When colliding with the vehicle, the action is to deposit your collectibles into it
 		elif collider.is_in_group("Enemy"):
 			collider.on_hit_by_player()
@@ -57,8 +60,12 @@ func get_input():
 				for part in self.held_collectibles:
 					part.deposit()
 				self.held_collectibles = []
+				set_parts_sprite("")
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
+
+func set_parts_sprite(texturePath: String):
+	LootSprite.set_texture(load(texturePath))
 
 func _set_animation(new_animation = ""):
 	if (self.animation == new_animation):
