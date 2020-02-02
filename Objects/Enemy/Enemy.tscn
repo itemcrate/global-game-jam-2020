@@ -42,5 +42,7 @@ anims/Walk = ExtResource( 6 )
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource( 2 )
 
+[node name="LootSprite" type="Sprite" parent="."]
 [node name="HitAudioPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 8 )
+
