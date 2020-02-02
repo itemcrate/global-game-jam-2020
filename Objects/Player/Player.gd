@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 onready var AnimationPlayer = get_node("AnimationPlayer")
 onready var Sprite = get_node("Sprite")
-onready var PickupAudioPlayer = get_node("PickupAudioPlayer")
 onready var HitBarrierAudioPlayer = get_node("HitBarrierAudioPlayer")
 onready var ray = get_node("RayCast2D")
 
