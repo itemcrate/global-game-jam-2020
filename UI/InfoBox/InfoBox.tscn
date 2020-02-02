@@ -62,6 +62,7 @@ custom_colors/font_color = Color( 0.0313726, 0.0784314, 0.117647, 1 )
 text = "Vehicle Repaired"
 align = 1
 valign = 1
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

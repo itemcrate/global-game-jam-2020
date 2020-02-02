@@ -123,7 +123,6 @@ func on_hit_by_player():
 
 func on_attack_player():
 	HitAudioPlayer.play()
-	# TODO: stun player
 
 func _set_animation(new_animation = ""):
 	if (self.animation == new_animation):
