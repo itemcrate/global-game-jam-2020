@@ -9,15 +9,17 @@ enum WEIGHTS {
 	LARGE = 3
 }
 
-var weight: int
+var texture_path: String = ''
+var weight: int = self.WEIGHTS.LARGE # Default
 
 func _ready():
-	pass # Replace with function body.
+	pass
 
 func collect(entity):
 	if !PickupAudioPlayer.playing:
 		PickupAudioPlayer.play()
 	entity.held_collectibles.append(self)
+	entity.set_parts_sprite(self.texture_path)
 	.collect(entity)
 
 func deposit():
@@ -27,5 +29,9 @@ func deposit():
 func get_weight():
 	return self.weight
 
-func set_weight(weight):
-	self.weight = weight
+func set_weight(newWeight: int):
+	self.weight = newWeight
+
+func set_sprite_texture(texturePath: String):
+	self.texture_path = texturePath
+	sprite.set_texture(load(self.texture_path))

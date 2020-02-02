@@ -46,5 +46,9 @@ stream = SubResource( 2 )
 volume_db = -6.0
 bus = "SFX"
 
+
+[node name="LootSprite" type="Sprite" parent="."]
+
 [node name="HitBarrierAudioPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+
