@@ -65,6 +65,8 @@ func get_input():
 		ray.get_collider().stopDamage()
 
 func set_parts_sprite(texturePath: String):
+	if texturePath == "":
+		return
 	LootSprite.set_texture(load(texturePath))
 
 func _set_animation(new_animation = ""):
