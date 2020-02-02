@@ -32,4 +32,4 @@ func _on_tutorial_barricade_body_entered(body):
 		return
 
 	self.has_entered_barrier = true
-	InfoBox.open("Break barriers with A!")
+	InfoBox.open("Break barriers by holding A!")
