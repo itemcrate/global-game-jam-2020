@@ -2,8 +2,9 @@ extends KinematicBody2D
 
 onready var AnimationPlayer = get_node("AnimationPlayer")
 onready var Sprite = get_node("Sprite")
-
-onready var ray = $RayCast2D
+onready var PickupAudioPlayer = get_node("PickupAudioPlayer")
+onready var HitBarrierAudioPlayer = get_node("HitBarrierAudioPlayer")
+onready var ray = get_node("RayCast2D")
 
 var held_collectibles: Array = []
 var motion: Vector2 = Vector2()
