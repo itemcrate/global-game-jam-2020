@@ -2,7 +2,7 @@
 🎮 Global Game Jam 2020 - TBD
 
 ## Details
-- Engine: Godot 3.1.2
+- Engine: Godot 3.2
 - Color Palette: TBD
 
 ## Team
