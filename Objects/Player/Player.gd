@@ -77,6 +77,7 @@ func get_input():
 func set_parts_sprite(texturePath: String):
 	if (texturePath == ""):
 		LootSprite.hide()
+		return
 
 	LootSprite.set_texture(load(texturePath))
 	LootSprite.show()
