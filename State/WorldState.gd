@@ -12,7 +12,7 @@ func _ready():
 	OS.center_window()
 	
 	# Initialize Vehicle Health
-	self.set_vehicle_health(100)
+	self.set_vehicle_health(30)
 
 func _input(event):
 	if (event.is_action_pressed("fullscreen_toggle")):

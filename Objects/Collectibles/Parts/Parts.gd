@@ -7,7 +7,7 @@ enum WEIGHTS {
 	LARGE = 3
 }
 
-var weight: int
+export(WEIGHTS) var weight: int
 
 func _ready():
 	pass # Replace with function body.
