@@ -1,5 +1,7 @@
 extends "res://Objects/Collectibles/Collectible.gd"
 
+onready var PickupAudioPlayer = $PickupAudioPlayer
+
 # Weights for various part types
 enum WEIGHTS {
 	SMALL = 1,
@@ -14,6 +16,8 @@ func _ready():
 	pass
 
 func collect(entity):
+	if !PickupAudioPlayer.playing:
+		PickupAudioPlayer.play()
 	entity.held_collectibles.append(self)
 	entity.set_parts_sprite(self.texture_path)
 	.collect(entity)
