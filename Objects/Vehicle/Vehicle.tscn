@@ -12,7 +12,7 @@
 [ext_resource path="res://Resources/Audio/music_battle.ogg" type="AudioStream" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 22, 22 )
+extents = Vector2( 19, 22 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 32.0
@@ -86,6 +86,7 @@ color_ramp = SubResource( 9 )
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1, 1 )
 shape = SubResource( 1 )
 
 [node name="PlayerDetector" type="Area2D" parent="."]
@@ -94,7 +95,7 @@ shape = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="LeftTread" type="Sprite" parent="."]
-position = Vector2( -19, 2 )
+position = Vector2( -16, 1 )
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -111,7 +112,7 @@ local_coords = false
 process_material = SubResource( 5 )
 
 [node name="RightTread" type="Sprite" parent="."]
-position = Vector2( 19, 2 )
+position = Vector2( 15, 1 )
 texture = ExtResource( 4 )
 hframes = 3
 
