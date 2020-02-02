@@ -3,6 +3,8 @@ extends Node
 var vehicle_health
 var vehicle_location
 var enemy_tally = 0
+var vehicle_critical_threshold = 0.33
+var vehicle_excellent_threshold = 0.96
 
 func _ready():
 	# Double Window Resolution & Center
@@ -42,6 +44,19 @@ func decrement_vehicle_health(amount):
 		Transition.fade_to("res://Screens/GameOver/GameOver.tscn")
 	else:
 		self.vehicle_health -= amount
+
+# Vehicle Thresholds
+func get_vehicle_critical_threshold():
+	return self.vehicle_critical_threshold
+
+func set_vehicle_critical_threshold(threshold):
+	self.vehicle_critical_threshold = threshold
+
+func get_vehicle_excellent_threshold():
+	return self.vehicle_excellent_threshold
+
+func set_vehicle_excellent_threshold(threshold):
+	self.vehicle_excellent_threshold = threshold
 
 # Enemy Tally
 func get_enemy_tally():

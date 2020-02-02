@@ -23,6 +23,12 @@ var left_animation = null
 var right_animation = null
 var enemy_count = 0
 
+const SPEEDS = {
+	SLOW = 5,
+	NORMAL = 20,
+	FAST = 40
+}
+
 func _ready():
 	PlayerDetector.connect("body_entered", self, "_on_player_detector_body_entered")
 	PlayerDetector.connect("body_exited", self, "_on_player_detector_body_exited")
@@ -38,6 +44,14 @@ func _input(event):
 	
 func _physics_process(_delta):
 	if (self.is_active):
+		# Set speed based on health
+		if WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold():
+			self.speed_slow()
+		elif WorldState.get_vehicle_health() > 100 * WorldState.get_vehicle_excellent_threshold():
+			self.speed_fast()
+		else:
+			self.speed_normal()
+
 		self.motion = Vector2()
 		
 		if (Input.is_action_pressed("vehicle_forward")):
@@ -138,7 +152,16 @@ func exit():
 	var player_instance = Player.instance()
 	player_instance.set_position(PlayerExitPosition.get_global_position())
 	get_tree().get_current_scene().add_child(player_instance)
-	
+
+func speed_slow():
+	self.speed = self.SPEEDS.SLOW
+
+func speed_normal():
+	self.speed = self.SPEEDS.NORMAL
+
+func speed_fast():
+	self.speed = self.SPEEDS.FAST
+
 func _on_player_detector_body_entered(body):
 	if (!body.is_in_group("Player")):
 		return
