@@ -50,6 +50,8 @@ func get_input():
 		# When colliding with an obstruction, the action is to remove it
 		if collider.is_in_group("Obstructions"):
 			collider.damage()
+			if !HitBarrierAudioPlayer.playing:
+				HitBarrierAudioPlayer.play()
 		# When colliding with the vehicle, the action is to deposit your collectibles into it
 		elif collider.is_in_group("Enemy"):
 			collider.on_hit_by_player()
