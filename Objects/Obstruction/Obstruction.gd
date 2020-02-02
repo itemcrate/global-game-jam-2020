@@ -40,6 +40,7 @@ func stopDamage():
 		return
 	# Pause the timer
 	timer.set_paused(true)
+	decay_bar.hide()
 
 func destroy():
 	self.queue_free()

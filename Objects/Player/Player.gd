@@ -12,14 +12,15 @@ var motion: Vector2 = Vector2()
 var speed: int = 80
 var animation = ""
 var attacking = false
+var destroying_obstruction = false
 
 func _ready():
 	pass
 	
 func _input(event):
-	if (event.is_action_pressed("player_left")):
+	if (event.is_action_pressed("player_left")) && !self.destroying_obstruction:
 		Sprite.set_flip_h(true)
-	elif (event.is_action_pressed("player_right")):
+	elif (event.is_action_pressed("player_right")) && !self.destroying_obstruction:
 		Sprite.set_flip_h(false)
 
 	if (event.is_action_pressed("player_action")):
@@ -32,19 +33,20 @@ func get_input():
 	# Detect up/down/left/right keystate and only move when pressed.
 	self.motion = Vector2()
 
-	if Input.is_action_pressed('player_right'):
-		self.motion.x += 1
-		ray.set_cast_to(Vector2(16, 0))
-	if Input.is_action_pressed('player_left'):
-		self.motion.x -= 1
-		ray.set_cast_to(Vector2(-16, 0))
-	if Input.is_action_pressed('player_down'):
-		self.motion.y += 1
-		ray.set_cast_to(Vector2(0, 16))
-	if Input.is_action_pressed('player_up'):
-		self.motion.y -= 1
-		ray.set_cast_to(Vector2(0, -16))
-	self.motion = self.motion.normalized() * speed
+	if (!self.destroying_obstruction):
+		if Input.is_action_pressed('player_right'):
+			self.motion.x += 1
+			ray.set_cast_to(Vector2(16, 0))
+		if Input.is_action_pressed('player_left'):
+			self.motion.x -= 1
+			ray.set_cast_to(Vector2(-16, 0))
+		if Input.is_action_pressed('player_down'):
+			self.motion.y += 1
+			ray.set_cast_to(Vector2(0, 16))
+		if Input.is_action_pressed('player_up'):
+			self.motion.y -= 1
+			ray.set_cast_to(Vector2(0, -16))
+		self.motion = self.motion.normalized() * speed
 	
 	# Set Animation
 	if !attacking:
@@ -59,6 +61,7 @@ func get_input():
 		# When colliding with an obstruction, the action is to remove it
 		if collider.is_in_group("Obstructions"):
 			collider.damage()
+			self.destroying_obstruction = true
 			if !HitBarrierAudioPlayer.playing:
 				HitBarrierAudioPlayer.play()
 		# When colliding with the vehicle, the action is to deposit your collectibles into it
@@ -73,6 +76,9 @@ func get_input():
 				set_parts_sprite("")
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
+		self.destroying_obstruction = false
+	elif !ray.is_colliding():
+		self.destroying_obstruction = false
 
 func set_parts_sprite(texturePath: String):
 	if (texturePath == ""):
