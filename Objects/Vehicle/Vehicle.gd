@@ -24,6 +24,12 @@ var left_animation = null
 var right_animation = null
 var enemy_count = 0
 
+const SPEEDS = {
+	SLOW = 5,
+	NORMAL = 20,
+	FAST = 40
+}
+
 func _ready():
 	var visibility_mask = load("res://Objects/VisibilityMask/VisibilityMask.tscn").instance()
 	self.add_child(visibility_mask)
@@ -45,6 +51,14 @@ func _physics_process(_delta):
 	update_arrow()
 
 	if (self.is_active):
+		# Set speed based on health
+		if WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold():
+			self.speed_slow()
+		elif WorldState.get_vehicle_health() > 100 * WorldState.get_vehicle_excellent_threshold():
+			self.speed_fast()
+		else:
+			self.speed_normal()
+
 		self.motion = Vector2()
 		
 		if (Input.is_action_pressed("vehicle_forward")):
@@ -113,6 +127,10 @@ func _set_animation(new_left_animation = "", new_right_animation = ""):
 func enter():
 	# Enable Vehicle
 	self.is_active = true
+	# Before we enter the vehicle, we have to deposit all held collectibles
+	if self.nearby_passenger.held_collectibles.size() > 0:
+		for part in self.nearby_passenger.held_collectibles:
+			part.deposit()
 	self.nearby_passenger.queue_free()
 	
 	# Start Animation
@@ -146,9 +164,19 @@ func exit():
 	player_instance.set_position(PlayerExitPosition.get_global_position())
 	get_tree().get_current_scene().add_child(player_instance)
 
+
 func update_arrow():
 	Arrow.look_at(get_parent().get_node("Level" + String(WorldState.get_current_level())).get_node("Goal").get_global_position())
-	
+
+func speed_slow():
+	self.speed = self.SPEEDS.SLOW
+
+func speed_normal():
+	self.speed = self.SPEEDS.NORMAL
+
+func speed_fast():
+	self.speed = self.SPEEDS.FAST
+
 func _on_player_detector_body_entered(body):
 	if (!body.is_in_group("Player")):
 		return

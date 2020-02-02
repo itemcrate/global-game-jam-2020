@@ -3,8 +3,6 @@ extends Node2D
 onready var scoreLabel = $Score
 
 var maxHealth = 100
-var criticalThreshold = 0.25 # bottom 1/4
-var excellentTreshold = 0.75 # top 1/4
 var finalScore = 0
 
 func _ready():
@@ -15,10 +13,10 @@ func _ready():
 	# enemy tally bonus
 	finalScore += enemyTally * 10
 
-	# health bonus
-	if health < maxHealth*criticalThreshold: # negative bonus
+	# health bonuses
+	if health < maxHealth * WorldState.get_vehicle_critical_threshold():
 		finalScore *= 0.5
-	elif health > maxHealth*excellentTreshold: # positive bonus
+	elif health > maxHealth * WorldState.get_vehicle_excellent_threshold():
 		finalScore *= 2
 
 	scoreLabel.text = "Score: %s" % finalScore

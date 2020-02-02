@@ -13,7 +13,7 @@ func _ready():
 	pass # Replace with function body.
 
 func collect(entity):
-	entity.heldCollectible = self
+	entity.held_collectibles.append(self)
 	.collect(entity)
 
 func deposit():
