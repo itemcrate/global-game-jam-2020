@@ -12,7 +12,7 @@ func _ready():
 	
 func _input(event):
 	if (event.is_action_pressed("ui_accept")):
-		Transition.fade_to("res://Screens/Main/Main.tscn")
+		Transition.fade_to("res://Screens/Title/Title.tscn")
 
 func _on_transition_timer_timeout():
 	Transition.fade_to("res://Screens/Title/Title.tscn")
