@@ -111,9 +111,7 @@ func on_hit_by_player():
 		dropped_part = load("res://Objects/Collectibles/Parts/Parts.tscn").instance()
 		dropped_part.position = self.position
 		dropped_part.set_weight(partType)
-
-		self.add_child(dropped_part)
-
+		self.get_parent().add_child(dropped_part)
 		dropped_part.set_sprite_texture(dropped_part_texture)
 
 	WorldState.increment_enemy_tally()

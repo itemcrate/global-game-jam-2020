@@ -17,7 +17,6 @@ func _ready():
 func spawn_enemy(count = 1):
 
 	for _i in range(count):
-		print('this does trigger');
 		# Spawn Player
 		var enemy_instance = Enemy.instance()
 		var spawn_coord = SpawnPoint.get_global_position()

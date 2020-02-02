@@ -7,6 +7,7 @@ enum WEIGHTS {
 	LARGE = 3
 }
 
+var texture_path: String = ''
 var weight: int = self.WEIGHTS.LARGE # Default
 
 func _ready():
@@ -14,6 +15,7 @@ func _ready():
 
 func collect(entity):
 	entity.held_collectibles.append(self)
+	entity.set_parts_sprite(self.texture_path)
 	.collect(entity)
 
 func deposit():
@@ -24,12 +26,8 @@ func get_weight():
 	return self.weight
 
 func set_weight(newWeight: int):
-	var part_sprite = ""
-	var random_int = randi() % 2 + 1
-	print(random_int)
-
 	self.weight = newWeight
 
 func set_sprite_texture(texturePath: String):
-	var sprite_texture = load(texturePath)
-	sprite.set_texture(sprite_texture)
+	self.texture_path = texturePath
+	sprite.set_texture(load(self.texture_path))

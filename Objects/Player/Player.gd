@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 onready var AnimationPlayer = get_node("AnimationPlayer")
 onready var Sprite = get_node("Sprite")
+onready var LootSprite = get_node("LootSprite")
 
 onready var ray = $RayCast2D
 
@@ -57,8 +58,12 @@ func get_input():
 				for part in self.held_collectibles:
 					part.deposit()
 				self.held_collectibles = []
+				set_parts_sprite("")
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
+
+func set_parts_sprite(texturePath: String):
+	LootSprite.set_texture(load(texturePath))
 
 func _set_animation(new_animation = ""):
 	if (self.animation == new_animation):
