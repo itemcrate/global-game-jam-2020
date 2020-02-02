@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Resources/Tilesets/Environment_Cliffs.tres" type="TileSet" id=1]
 [ext_resource path="res://Resources/Tilesets/Environment_Ground.tres" type="TileSet" id=2]
@@ -9,6 +9,9 @@
 [ext_resource path="res://Objects/Obstruction/BarricadeMedium.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Resources/Sprites/hermie.png" type="Texture" id=8]
 [ext_resource path="res://Objects/Collectibles/Parts/Parts.tscn" type="PackedScene" id=9]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 10, 36 )
 
 [node name="Level1" type="Node2D"]
 
@@ -234,3 +237,9 @@ position = Vector2( 976, 784 )
 [node name="EasterEgg" type="Sprite" parent="."]
 position = Vector2( 1064, 768 )
 texture = ExtResource( 8 )
+
+[node name="BarricadeTutorial" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarricadeTutorial"]
+position = Vector2( 328, 204 )
+shape = SubResource( 1 )
