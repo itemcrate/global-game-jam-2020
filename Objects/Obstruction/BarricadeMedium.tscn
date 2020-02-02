@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Resources/Sprites/barrier-hp-bar-progress.png" type="Texture" id=1]
+[ext_resource path="res://Resources/Sprites/barrier-hp-bar-over.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Sprites/barrier-hp-bar-under.png" type="Texture" id=3]
+[ext_resource path="res://Objects/Obstruction/Barricade.gd" type="Script" id=4]
+[ext_resource path="res://Resources/Sprites/barrier_med.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8.17341, 8.07483 )
+
+[node name="Barricade" type="StaticBody2D" groups=[
+"Obstructions",
+]]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 3, 2 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DecayBar" type="TextureProgress" parent="."]
+visible = false
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 18.0
+margin_bottom = -6.0
+max_value = 5.0
+step = 0.01
+value = 5.0
+texture_under = ExtResource( 3 )
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
