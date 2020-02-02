@@ -4,6 +4,7 @@ onready var Vehicle = get_parent().get_node("Vehicle")
 onready var ray = $RayCast2D
 onready var AnimationPlayer = $AnimationPlayer
 onready var loot_sprite = $LootSprite
+onready var HitAudioPlayer = $HitAudioPlayer
 
 var animation = ""
 var disappearDist = 130
@@ -82,6 +83,8 @@ func _physics_process(delta):
 func on_hit_vehicle():
 	if !hasPart:
 		# Steal the part, damage the vehicle, and carry the part away
+		HitAudioPlayer.play()
+
 		hasPart = true
 		partType = randi() % 3 + 1
 
@@ -119,8 +122,8 @@ func on_hit_by_player():
 	self.queue_free()
 
 func on_attack_player():
-	# TODO: hit sound
-	pass # TODO: stun player
+	HitAudioPlayer.play()
+	# TODO: stun player
 
 func _set_animation(new_animation = ""):
 	if (self.animation == new_animation):

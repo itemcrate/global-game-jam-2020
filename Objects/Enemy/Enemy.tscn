@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Resources/Sprites/enemy1.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Enemy/Enemy.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Resources/Animations/Character_Attack.tres" type="Animation" id=5]
 [ext_resource path="res://Resources/Animations/Character_Walk.tres" type="Animation" id=6]
 [ext_resource path="res://Resources/Animations/Character_Stun.tres" type="Animation" id=7]
+[ext_resource path="res://Resources/Audio/sound_enemy_hit.wav" type="AudioStream" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.0
@@ -42,3 +43,6 @@ anims/Walk = ExtResource( 6 )
 stream = SubResource( 2 )
 
 [node name="LootSprite" type="Sprite" parent="."]
+[node name="HitAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+
