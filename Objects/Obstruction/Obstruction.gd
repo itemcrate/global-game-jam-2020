@@ -38,8 +38,7 @@ func damage():
 func stopDamage():
 	if !is_destructible:
 		return
-	# Pause the timer and hide the progress bar
-	decay_bar.hide()
+	# Pause the timer
 	timer.set_paused(true)
 
 func destroy():
