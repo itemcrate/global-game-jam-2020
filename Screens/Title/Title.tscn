@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/Fonts/HelvetiPixel_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Screens/Title/Title.gd" type="Script" id=2]
 [ext_resource path="res://Resources/Sprites/title-screen.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Audio/music_title.wav" type="AudioStream" id=4]
 
 [node name="Title" type="Node2D"]
 script = ExtResource( 2 )
@@ -27,3 +28,7 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TitleAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = 12.0
