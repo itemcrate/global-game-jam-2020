@@ -15,7 +15,7 @@ func _ready():
 
 func _physics_process(_delta):
 	if self.is_tutorial && !self.has_picked_up:
-		if get_node("Player").held_collectibles.size() == 1:
+		if get_node_or_null("Player") != null && get_node("Player").held_collectibles.size() == 1:
 			self.has_picked_up = true
 			InfoBox.open("Enter vehicle with Y!")
 
