@@ -20,6 +20,12 @@ func _input(event):
 		Sprite.set_flip_h(true)
 	elif (event.is_action_pressed("player_right")):
 		Sprite.set_flip_h(false)
+
+	if (event.is_action_pressed("player_action")):
+		if !attacking:
+			self.attacking = true
+			self._set_animation("Attack")
+			AnimationPlayer.set_speed_scale(4.0)
 		
 func get_input():
 	# Detect up/down/left/right keystate and only move when pressed.
@@ -40,12 +46,11 @@ func get_input():
 	self.motion = self.motion.normalized() * speed
 	
 	# Set Animation
-	if attacking:
-		self._set_animation("Attack")
-	elif (self.motion.length()):
-		self._set_animation("Walk")
-	else:
-		self._set_animation("Idle")
+	if !attacking:
+		if (self.motion.length()):
+			self._set_animation("Walk")
+		else:
+			self._set_animation("Idle")
 
 	# Detect collision and obstruction removal
 	if Input.is_action_pressed("player_action") && ray.is_colliding():
@@ -66,13 +71,6 @@ func get_input():
 				set_parts_sprite("")
 	elif Input.is_action_just_released("player_action") && ray.is_colliding() && ray.get_collider().is_in_group("Obstructions"):
 		ray.get_collider().stopDamage()
-	
-	if Input.is_action_pressed("player_action"):
-		if !attacking:
-			self.attacking = true
-	
-	if Input.is_action_just_released("player_action"):
-		self.attacking = false
 
 func set_parts_sprite(texturePath: String):
 	if (texturePath == ""):
@@ -92,3 +90,9 @@ func _set_animation(new_animation = ""):
 func _physics_process(_delta):
 	get_input()
 	move_and_slide(self.motion)
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == 'Attack':
+		self.attacking = false
+		self._set_animation("Idle")
+		AnimationPlayer.set_speed_scale(2.0)
