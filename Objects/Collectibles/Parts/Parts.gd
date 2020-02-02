@@ -10,10 +10,22 @@ enum WEIGHTS {
 }
 
 var texture_path: String = ''
-var weight: int = self.WEIGHTS.LARGE # Default
+export(WEIGHTS) var weight: int = WEIGHTS.SMALL
 
 func _ready():
-	pass
+	var dropped_part_texture = ""
+	var random_int = randi() % 2 + 1
+
+	match (weight):
+		WEIGHTS.SMALL:
+			dropped_part_texture = "res://Resources/Sprites/part-small-" + String(random_int) + ".png"
+		WEIGHTS.MEDIUM:
+			dropped_part_texture = "res://Resources/Sprites/part-medium-" + String(random_int) + ".png"
+		WEIGHTS.LARGE:
+			dropped_part_texture = "res://Resources/Sprites/part-large.png"
+
+	self.set_sprite_texture(dropped_part_texture)
+		
 
 func collect(entity):
 	if !PickupAudioPlayer.playing:

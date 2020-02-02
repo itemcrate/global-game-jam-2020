@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Screens/Main/Main.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Level/Level_1/Level1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Objects/Enemy/Enemy.tscn" type="PackedScene" id=5]
 [ext_resource path="res://UI/HUD/HUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Resources/Audio/ambience_wind.ogg" type="AudioStream" id=7]
 
@@ -16,7 +17,10 @@ script = ExtResource( 1 )
 position = Vector2( 120.611, 199.456 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 73.0607, 187.572 )
+position = Vector2( 166.489, 195.272 )
+
+[node name="Enemy" parent="." instance=ExtResource( 5 )]
+position = Vector2( 69.8125, 216.458 )
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
 

@@ -75,7 +75,12 @@ func get_input():
 		self.attacking = false
 
 func set_parts_sprite(texturePath: String):
+	if (texturePath == ""):
+		LootSprite.hide()
+		return
+
 	LootSprite.set_texture(load(texturePath))
+	LootSprite.show()
 
 func _set_animation(new_animation = ""):
 	if (self.animation == new_animation):
