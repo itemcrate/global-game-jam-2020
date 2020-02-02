@@ -14,6 +14,7 @@ onready var LeftTreadParticles2D = get_node("LeftTread/Particles2D")
 onready var RightTreadParticles2D = get_node("RightTread/Particles2D")
 onready var BattleMusicPlayer = get_node("BattleMusicPlayer")
 onready var EnemyDetector = get_node("EnemyDetector")
+onready var SmokeParticles = get_node("SmokeParticles")
 
 var motion: Vector2 = Vector2()
 var speed = 20
@@ -43,6 +44,12 @@ func _input(event):
 			self.enter()
 	
 func _physics_process(_delta):
+	if (
+		WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold() and
+		!SmokeParticles.is_emitting()
+	):
+		SmokeParticles.set_emitting(true)
+	
 	if (self.is_active):
 		# Set speed based on health
 		if WorldState.get_vehicle_health() < 100 * WorldState.get_vehicle_critical_threshold():
