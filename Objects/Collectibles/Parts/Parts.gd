@@ -30,10 +30,6 @@ func set_weight(newWeight: int):
 
 	self.weight = newWeight
 
-	if self.weight == self.WEIGHTS.SMALL:
-		part_sprite = load("res://Resources/Sprites/part-small-" + String(random_int) + ".png")
-	elif self.weight == self.WEIGHTS.MEDIUM:
-		part_sprite = load("res://Resources/Sprites/part-medium-" + String(random_int) + ".png")
-	else:
-		part_sprite = load("res://Resources/Sprites/part-large.png")
-	sprite.set_texture(part_sprite)
+func set_sprite_texture(texturePath: String):
+	var sprite_texture = load(texturePath)
+	sprite.set_texture(sprite_texture)
