@@ -12,7 +12,7 @@
 radius = 4.0
 height = 8.0
 
-[sub_resource type="AudioStreamRandomPitch" id=4]
+[sub_resource type="AudioStreamRandomPitch" id=2]
 audio_stream = ExtResource( 3 )
 random_pitch = 1.5
 
@@ -39,6 +39,6 @@ anims/Stun = ExtResource( 7 )
 anims/Walk = ExtResource( 6 )
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 4 )
+stream = SubResource( 2 )
 volume_db = -6.0
 bus = "SFX"
