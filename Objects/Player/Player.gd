@@ -25,6 +25,7 @@ func _input(event):
 		if !attacking:
 			self.attacking = true
 			self._set_animation("Attack")
+			AnimationPlayer.set_speed_scale(4.0)
 		
 func get_input():
 	# Detect up/down/left/right keystate and only move when pressed.
@@ -94,3 +95,4 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == 'Attack':
 		self.attacking = false
 		self._set_animation("Idle")
+		AnimationPlayer.set_speed_scale(2.0)
