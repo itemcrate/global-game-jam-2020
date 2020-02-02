@@ -1,8 +1,8 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Resources/Sprites/vehicle_base.png" type="Texture" id=1]
 [ext_resource path="res://Objects/Vehicle/Vehicle.gd" type="Script" id=2]
-[ext_resource path="res://Resources/Sprites/particle_smoke.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Sprites/hud-arrow.png" type="Texture" id=3]
 [ext_resource path="res://Resources/Sprites/vehicle_tread.png" type="Texture" id=4]
 [ext_resource path="res://Resources/Animations/VehicleTread_Forward.tres" type="Animation" id=5]
 [ext_resource path="res://Resources/Animations/VehicleTread_Reverse.tres" type="Animation" id=6]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Resources/Audio/sound_engine_stop.wav" type="AudioStream" id=9]
 [ext_resource path="res://Resources/Audio/music_battle.ogg" type="AudioStream" id=10]
 [ext_resource path="res://Objects/VisibilityMask/VisibilityMask.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Resources/Sprites/particle_smoke.png" type="Texture" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 19, 22 )
@@ -176,6 +177,10 @@ preprocess = 4.0
 local_coords = false
 draw_order = 1
 process_material = SubResource( 12 )
-texture = ExtResource( 3 )
+texture = ExtResource( 12 )
 
 [node name="VisibilityMask" parent="." instance=ExtResource( 11 )]
+
+[node name="Arrow" type="Sprite" parent="."]
+position = Vector2( 0, -32 )
+texture = ExtResource( 3 )
