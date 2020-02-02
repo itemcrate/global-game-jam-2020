@@ -3,6 +3,7 @@ extends KinematicBody2D
 onready var Vehicle = get_parent().get_node("Vehicle")
 onready var ray = $RayCast2D
 var rayLength = 10
+var disappearDist = 130
 
 export (int) var speed = 40	# Max speed of enemy movement
 export (bool) var hasPart = false # Is enemey holding a vehicle part?
@@ -30,6 +31,10 @@ var target = Vector2() # Position enemy heads toward
 func ai_sense_env():
 	if !hasPart: # target vehicle
 		target = Vehicle.position
+	else:        # running away
+		# detect distance from vehicle
+		if self.disappearDist < self.position.distance_to(Vehicle.position):
+			self.queue_free()
 
 func ai_move_toward(_target, delta):
 	# get vector to target
@@ -88,4 +93,5 @@ func on_hit_by_player():
 	self.queue_free()
 
 func on_attack_player():
+	# TODO: hit sound
 	pass # TODO: stun player
