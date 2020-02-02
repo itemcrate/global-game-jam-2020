@@ -24,6 +24,8 @@ shape = SubResource( 1 )
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
 
+[node name="SpawnPoint" type="Position2D" parent="."]
+
 [node name="DecayBar" type="TextureProgress" parent="."]
 visible = false
 margin_left = -20.0

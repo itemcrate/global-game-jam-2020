@@ -16,7 +16,6 @@ func _ready():
 	var dropped_part_texture = ""
 	var random_int = randi() % 2 + 1
 
-	print(weight)
 	match (weight):
 		WEIGHTS.SMALL:
 			dropped_part_texture = "res://Resources/Sprites/part-small-" + String(random_int) + ".png"

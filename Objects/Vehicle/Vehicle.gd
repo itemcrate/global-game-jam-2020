@@ -54,7 +54,7 @@ func _physics_process(_delta):
 		!SmokeParticles.is_emitting()
 	):
 		SmokeParticles.set_emitting(true)
-	else:
+	elif WorldState.get_vehicle_health() >= 100 * WorldState.get_vehicle_critical_threshold():
 		SmokeParticles.set_emitting(false)
 
 	update_arrow()
