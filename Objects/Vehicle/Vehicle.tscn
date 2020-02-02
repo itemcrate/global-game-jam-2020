@@ -98,6 +98,7 @@ shape = SubResource( 2 )
 
 [node name="LeftTread" type="Sprite" parent="."]
 position = Vector2( -16, 1 )
+z_index = 1
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -108,13 +109,15 @@ anims/Reverse = ExtResource( 6 )
 
 [node name="Particles2D" type="Particles2D" parent="LeftTread"]
 position = Vector2( 0, 20 )
-z_index = -1
+z_as_relative = false
 amount = 32
+lifetime = 2.0
 local_coords = false
 process_material = SubResource( 5 )
 
 [node name="RightTread" type="Sprite" parent="."]
 position = Vector2( 15, 1 )
+z_index = 1
 texture = ExtResource( 4 )
 hframes = 3
 
@@ -124,8 +127,9 @@ anims/Reverse = ExtResource( 6 )
 
 [node name="Particles2D" type="Particles2D" parent="RightTread"]
 position = Vector2( 0, 20 )
-z_index = -1
+z_as_relative = false
 amount = 32
+lifetime = 2.0
 local_coords = false
 process_material = SubResource( 5 )
 
